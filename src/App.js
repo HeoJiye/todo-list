@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Button, InputContainer, PageWrapper, TodoCard, TodoContainer, TodoHeader, TodoListContainer } from "./components/styles";
 import nextId from "react-id-generator";
 import { useDispatch, useSelector } from "react-redux";
-// import { __addToDo, __deleteTodo } from "./redux/modules/todosSlice";
-import { addTodo, deleteTodo } from "./redux/modules/todosSlice";
+import { __addToDo, __deleteTodo } from "./redux/modules/todosSlice";
 
 function App() {
   const id = nextId();
@@ -18,7 +17,7 @@ function App() {
      * 이곳에서 추가하기 기능을 구현해주세요.
      */
 
-    dispatch(addTodo({ id, title, body }));
+    dispatch(__addToDo({ id, title, body }));
   };
 
   const onDeleteTodo = (id) => {
@@ -26,7 +25,7 @@ function App() {
      * 시험 문제 2.
      * 이곳에서 삭제하기 기능을 구현해주세요.
      */
-    dispatch(deleteTodo(id));
+    dispatch(__deleteTodo(id));
   };
 
   const resetInputs = () => {

@@ -5,9 +5,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
  */
 import { waitTwoSeconds } from "../../utils";
 
-export const __addToDo = createAsyncThunk("__addToDo", async (payload, thunkAPI) => {});
+const mockPayloadCreator = async (payload, thunkAPI) => {
+  await waitTwoSeconds();
+  return payload;
+};
 
-export const __deleteTodo = createAsyncThunk("__deleteToDo", async (payload, thunkAPI) => {});
+export const __addToDo = createAsyncThunk("__addToDo", mockPayloadCreator);
+
+export const __deleteTodo = createAsyncThunk("__deleteToDo", mockPayloadCreator);
 
 const initialState = {
   list: [],
@@ -16,13 +21,12 @@ const initialState = {
 const todosSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {
-    addTodo: (state, action) => {
+  extraReducers: {
+    [__addToDo.fulfilled]: (state, action) => {
       state.list.push(action.payload);
     },
-    deleteTodo: (state, action) => {
-      const idx = state.list.findIndex((todo) => todo.id === action.payload);
-      state.list.splice(idx, 1);
+    [__deleteTodo.fulfilled]: (state, action) => {
+      state.list = state.list.filter((todo) => todo.id !== action.payload);
     },
   },
 });
