@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Loading, Button, InputContainer, PageWrapper, TodoCard, TodoContainer, TodoHeader, TodoListContainer } from "./components/styles";
+import React, { useState } from "react";
+import { Button, InputContainer, PageWrapper, TodoCard, TodoContainer, TodoHeader, TodoListContainer } from "./components/styles";
 import nextId from "react-id-generator";
 import { useDispatch, useSelector } from "react-redux";
 import { __addToDo, __deleteTodo } from "./redux/modules/todosSlice";
@@ -7,15 +7,25 @@ import { __addToDo, __deleteTodo } from "./redux/modules/todosSlice";
 function App() {
   const id = nextId();
   const dispatch = useDispatch();
-  const { list: todos, loading } = useSelector((state) => state.todos);
+  const todos = useSelector((state) => state.todos.list);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+
+  const resetInputs = () => {
+    /**
+     * 입력 값을 초기화하고 싶다면 사용하세요.
+     */
+    setTitle("");
+    setBody("");
+  };
 
   const onAddTodo = () => {
     /**
      * 시험 문제 1.
      * 이곳에서 추가하기 기능을 구현해주세요.
      */
+    if (!title || !body) return;
+    resetInputs();
     dispatch(__addToDo({ id, title, body }));
   };
 
@@ -27,22 +37,8 @@ function App() {
     dispatch(__deleteTodo(id));
   };
 
-  const resetInputs = () => {
-    /**
-     * 입력 값을 초기화하고 싶다면 사용하세요.
-     */
-    setTitle("");
-    setBody("");
-  };
-
   const onChangeTitle = (e) => setTitle(e.target.value);
   const onChangeBody = (e) => setBody(e.target.value);
-
-  useEffect(() => {
-    if (!loading) {
-      resetInputs();
-    }
-  }, [loading]);
 
   return (
     <PageWrapper>
@@ -65,11 +61,6 @@ function App() {
           ))}
         </TodoListContainer>
       </TodoContainer>
-      {loading && (
-        <Loading>
-          <span>잠시 기다려주세요...</span>
-        </Loading>
-      )}
     </PageWrapper>
   );
 }
