@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const PageWrapper = styled.div`
   width: 100%;
@@ -7,8 +7,7 @@ export const PageWrapper = styled.div`
   margin-top: 30px;
   flex-direction: column;
   align-items: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
 export const TodoContainer = styled.div`
@@ -26,9 +25,14 @@ export const TodoHeader = styled.span`
 
 export const InputContainer = styled.div`
   display: flex;
-  gap: 10px;
+  width: 100%;
+  gap: 12px;
   margin-top: 30px;
   align-items: center;
+  justify-content: center;
+  > input {
+    width: 120px;
+  }
 `;
 
 export const TodoListContainer = styled.div`
@@ -59,4 +63,31 @@ export const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+export const Loading = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  font-weight: bold;
+  color: #394867;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > span {
+    animation: fadeIn 1s infinite alternate;
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
 `;

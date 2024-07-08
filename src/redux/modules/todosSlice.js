@@ -15,6 +15,7 @@ export const __addToDo = createAsyncThunk("__addToDo", mockPayloadCreator);
 export const __deleteTodo = createAsyncThunk("__deleteToDo", mockPayloadCreator);
 
 const initialState = {
+  loading: false,
   list: [],
 };
 
@@ -22,11 +23,26 @@ const todosSlice = createSlice({
   name: "todos",
   initialState,
   extraReducers: {
+    [__addToDo.pending]: (state) => {
+      state.loading = true;
+    },
     [__addToDo.fulfilled]: (state, action) => {
+      state.loading = false;
       state.list.push(action.payload);
     },
+    [__addToDo.rejected]: (state) => {
+      state.loading = false;
+    },
+
+    [__deleteTodo.pending]: (state) => {
+      state.loading = true;
+    },
     [__deleteTodo.fulfilled]: (state, action) => {
+      state.loading = false;
       state.list = state.list.filter((todo) => todo.id !== action.payload);
+    },
+    [__deleteTodo.rejected]: (state) => {
+      state.loading = false;
     },
   },
 });

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, InputContainer, PageWrapper, TodoCard, TodoContainer, TodoHeader, TodoListContainer } from "./components/styles";
+import React, { useState, useEffect } from "react";
+import { Loading, Button, InputContainer, PageWrapper, TodoCard, TodoContainer, TodoHeader, TodoListContainer } from "./components/styles";
 import nextId from "react-id-generator";
 import { useDispatch, useSelector } from "react-redux";
 import { __addToDo, __deleteTodo } from "./redux/modules/todosSlice";
@@ -7,7 +7,7 @@ import { __addToDo, __deleteTodo } from "./redux/modules/todosSlice";
 function App() {
   const id = nextId();
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todos.list);
+  const { list: todos, loading } = useSelector((state) => state.todos);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
@@ -16,7 +16,6 @@ function App() {
      * 시험 문제 1.
      * 이곳에서 추가하기 기능을 구현해주세요.
      */
-
     dispatch(__addToDo({ id, title, body }));
   };
 
@@ -38,6 +37,13 @@ function App() {
 
   const onChangeTitle = (e) => setTitle(e.target.value);
   const onChangeBody = (e) => setBody(e.target.value);
+
+  useEffect(() => {
+    if (!loading) {
+      resetInputs();
+    }
+  }, [loading]);
+
   return (
     <PageWrapper>
       <TodoContainer>
@@ -59,6 +65,11 @@ function App() {
           ))}
         </TodoListContainer>
       </TodoContainer>
+      {loading && (
+        <Loading>
+          <span>잠시 기다려주세요...</span>
+        </Loading>
+      )}
     </PageWrapper>
   );
 }
