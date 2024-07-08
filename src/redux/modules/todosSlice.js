@@ -6,8 +6,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { waitTwoSeconds } from "../../utils";
 
 const mockPayloadCreator = async (payload, thunkAPI) => {
-  await waitTwoSeconds();
-  return payload;
+  try {
+    await waitTwoSeconds();
+    return payload;
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
 };
 
 export const __addToDo = createAsyncThunk("__addToDo", mockPayloadCreator);
